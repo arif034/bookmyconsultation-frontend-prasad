@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import TabContainer from "../tabContainer/TabContainer";
 import Login from "../../screens/login/Login";
+import Register from "../../screens/register/Register";
 
 const customStyles = {
   content: {
@@ -26,8 +27,8 @@ const customStyles = {
 };
 
 const Header = ({ baseUrl }) => {
-  const [openModal, setOpenModal] = useState(false);
-  const [value, setValue] = useState(0);
+  const [openModal, setOpenModal] = useState(true);
+  const [value, setValue] = useState(1);
   const [isLogin, setIsLogin] = useState(false);
 
   const toggleModalHandler = () => {
@@ -79,7 +80,7 @@ const Header = ({ baseUrl }) => {
   return (
     <div>
       <header className="header">
-        <img src={logo} className="logo" alt="logo" />
+        <img src={logo} className="logo" alt="logo" /> Doctor Finder
         <div className="login-button">
           {!isLogin === true ? (
             <Button
@@ -118,12 +119,13 @@ const Header = ({ baseUrl }) => {
               setIsLogin={setIsLogin}
             />
           )}
-          {/* {value === 1 && (
+          {value === 1 && (
             <Register
               baseUrl={baseUrl}
-              closeModalHandler={ToggleModalHandler}
+              toggleModalHandler={toggleModalHandler}
+              setIsLogin={setIsLogin}
             />
-          )} */}
+          )}
         </TabContainer>
       </Modal>
     </div>
