@@ -7,7 +7,7 @@ import {
   Button,
 } from "@material-ui/core";
 
-const Register = ({ baseUrl, toggleModalHandler, setIsLogin }) => {
+const Register = ({ baseUrl, loginUser }) => {
   const [firstName, setFirstName] = useState("");
   const [firstNameRequiredClass, setFirstNameRequiredClass] = useState("none");
   const [lastName, setLastName] = useState("");
@@ -101,8 +101,7 @@ const Register = ({ baseUrl, toggleModalHandler, setIsLogin }) => {
         setIsRegistered(true);
 
         setTimeout(function () {
-          setIsLogin(true);
-          toggleModalHandler();
+          loginUser(email, password);
         }, 3000);
       }
     } catch (e) {

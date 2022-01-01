@@ -27,8 +27,8 @@ const customStyles = {
 };
 
 const Header = ({ baseUrl }) => {
-  const [openModal, setOpenModal] = useState(true);
-  const [value, setValue] = useState(1);
+  const [openModal, setOpenModal] = useState(false);
+  const [value, setValue] = useState(0);
   const [isLogin, setIsLogin] = useState(false);
 
   const toggleModalHandler = () => {
@@ -64,6 +64,42 @@ const Header = ({ baseUrl }) => {
         const error = new Error();
         error.message = "Something went wrong.";
         console.log("User Could not be logged out");
+        throw error;
+      }
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  const loginUser = async (email, password) => {
+    const url = baseUrl + "auth/login";
+    // console.log(url);
+    const params = window.btoa(email + ":" + password);
+
+    try {
+      const rawResponse = await fetch(url, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=UTF-8",
+          Authorization: `Basic ${params}`,
+        },
+      });
+
+      if (rawResponse.ok) {
+        const response = await rawResponse.json();
+        // console.log(response.accessToken);
+        // window.location.href = "/";
+        window.sessionStorage.setItem("user-details", JSON.stringify(response));
+        window.sessionStorage.setItem("userId", JSON.stringify(response.id));
+        window.sessionStorage.setItem("accessToken", response.accessToken);
+        setIsLogin(true);
+        toggleModalHandler();
+        console.log("User Logged In");
+      } else {
+        const error = new Error();
+        error.message = "Something went wrong.";
+        console.log("User Could not be logged in");
         throw error;
       }
     } catch (e) {
@@ -112,18 +148,12 @@ const Header = ({ baseUrl }) => {
           <Tab label="Register" />
         </Tabs>
         <TabContainer>
-          {value === 0 && (
-            <Login
-              baseUrl={baseUrl}
-              toggleModalHandler={toggleModalHandler}
-              setIsLogin={setIsLogin}
-            />
-          )}
+          {value === 0 && <Login baseUrl={baseUrl} loginUser={loginUser} />}
           {value === 1 && (
             <Register
               baseUrl={baseUrl}
               toggleModalHandler={toggleModalHandler}
-              setIsLogin={setIsLogin}
+              loginUser={loginUser}
             />
           )}
         </TabContainer>

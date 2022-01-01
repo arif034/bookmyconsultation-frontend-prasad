@@ -7,7 +7,7 @@ import {
   InputLabel,
 } from "@material-ui/core";
 
-const Login = ({ baseUrl, setIsLogin, toggleModalHandler }) => {
+const Login = ({ baseUrl, loginUser }) => {
   const [email, setEmail] = useState("");
   const [emailRequiredClass, setEmailRequiredClass] = useState("none");
 
@@ -34,44 +34,11 @@ const Login = ({ baseUrl, setIsLogin, toggleModalHandler }) => {
     password === ""
       ? setPasswordRequiredClass("block")
       : setPasswordRequiredClass("none");
-
     // return if blank email & password are passed
     if (email === "" || password === "") {
       return;
     }
-    const url = baseUrl + "auth/login";
-    // console.log(url);
-    const params = window.btoa(email + ":" + password);
-
-    try {
-      const rawResponse = await fetch(url, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json;charset=UTF-8",
-          Authorization: `Basic ${params}`,
-        },
-      });
-
-      if (rawResponse.ok) {
-        const response = await rawResponse.json();
-        // console.log(response.accessToken);
-        // window.location.href = "/";
-        window.sessionStorage.setItem("user-details", JSON.stringify(response));
-        window.sessionStorage.setItem("userId", JSON.stringify(response.id));
-        window.sessionStorage.setItem("accessToken", response.accessToken);
-        setIsLogin(true);
-        toggleModalHandler();
-        console.log("User Logged In");
-      } else {
-        const error = new Error();
-        error.message = "Something went wrong.";
-        console.log("User Could not be logged in");
-        throw error;
-      }
-    } catch (e) {
-      alert(e.message);
-    }
+    loginUser(email, password);
   };
 
   return (
