@@ -10,6 +10,18 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
+import Modal from "react-modal";
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -27,6 +39,9 @@ const DoctorList = ({ baseUrl }) => {
   const [speciality, setSpeciality] = useState("");
   const [specialityList, setSpecialityList] = useState([]);
   const [doctorsList, setDoctorList] = useState([]);
+  const [doctor, setDoctor] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState(null);
 
   const getSpeciality = async () => {
     const url = baseUrl + "doctors/speciality";
@@ -100,6 +115,10 @@ const DoctorList = ({ baseUrl }) => {
     getFilteredDoctors(event.target.value);
   };
 
+  const closeModalHandler = () => {
+    setIsModalOpen(false);
+  };
+
   useEffect(() => {
     getSpeciality();
     getDoctorsList();
@@ -149,7 +168,11 @@ const DoctorList = ({ baseUrl }) => {
               style={{ width: "40%", margin: "10px" }}
               variant="contained"
               color="primary"
-              // onClick={this.bookAppointmentHandler(doctor)}
+              onClick={() => {
+                setDoctor(doctor);
+                setModalType("bookings");
+                setIsModalOpen(true);
+              }}
             >
               Book Appointment
             </Button>
@@ -161,13 +184,26 @@ const DoctorList = ({ baseUrl }) => {
               }}
               variant="contained"
               color="secondary"
-              onClick={() => console.log(doctor)}
+              onClick={() => {
+                setDoctor(doctor);
+                setModalType("details");
+                setIsModalOpen(true);
+              }}
             >
               View Details
             </Button>
           </Paper>
         );
       })}
+      <Modal
+        ariaHideApp={false}
+        isOpen={isModalOpen}
+        onRequestClose={closeModalHandler}
+        style={customStyles}
+      >
+        {modalType === "details" && <h3>Details</h3>}
+        {modalType === "bookings" && <h3>Bookings</h3>}
+      </Modal>
     </div>
   );
 };
