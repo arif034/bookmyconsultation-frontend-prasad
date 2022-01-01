@@ -11,6 +11,8 @@ import {
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import Modal from "react-modal";
+import DoctorDetails from "./DoctorDetails";
+import BookAppointment from "./BookAppointment";
 
 const customStyles = {
   content: {
@@ -123,6 +125,7 @@ const DoctorList = ({ baseUrl }) => {
     getSpeciality();
     getDoctorsList();
     // console.log(specialityList);
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -201,8 +204,10 @@ const DoctorList = ({ baseUrl }) => {
         onRequestClose={closeModalHandler}
         style={customStyles}
       >
-        {modalType === "details" && <h3>Details</h3>}
-        {modalType === "bookings" && <h3>Bookings</h3>}
+        {modalType === "details" && <DoctorDetails doctor={doctor} />}
+        {modalType === "bookings" && (
+          <BookAppointment baseUrl={baseUrl} doctor={doctor} />
+        )}
       </Modal>
     </div>
   );
