@@ -61,8 +61,56 @@ const BookAppointment = ({ baseUrl, doctor }) => {
     }
   };
 
-  const bookAppointmentHandler = () => {
-    alert("Book Appointment Handler called");
+  const bookAppointmentHandler = async () => {
+    if (
+      selectedSlot === "None" ||
+      selectedSlot === null ||
+      selectedSlot === ""
+    ) {
+      setSlotRequiredClass("block");
+      return;
+    }
+    console.log("Book Appointment Handler called");
+    const emailId = JSON.parse(sessionStorage.getItem("userId"));
+    const userDetails = JSON.parse(sessionStorage.getItem("user-details"));
+    const accessToken = sessionStorage.getItem("accessToken");
+    // console.log(JSON.parse(emailId));
+    console.log(accessToken);
+
+    let data = {
+      doctorId: doctor.id,
+      doctorName: doctorName,
+      userId: emailId,
+      userName: `${userDetails.firstName} ${userDetails.lastName}`,
+      timeSlot: selectedSlot,
+      createdDate: dateFormatter(new Date()),
+      appointmentDate: selectedDate,
+      symptoms: symptoms,
+      priorMedicalHistory: medicalHistory,
+    };
+    console.log(data);
+    const url = baseUrl + "appointments";
+    try {
+      //   debugger;
+      const rawResponse = await fetch(url, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=UTF-8",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (rawResponse.ok) {
+        console.log("Appointment booked successfully");
+      }
+      if (rawResponse.status === 400) {
+        alert("Either the slot is already booked or not available");
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
