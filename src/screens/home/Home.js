@@ -6,14 +6,13 @@ import Appointment from "../appointment/Appointment";
 
 const Home = ({ baseUrl }) => {
   const [value, setValue] = useState(0);
-  const isLogin = false;
-
+  const [isLogin, setIsLogin] = useState(false);
   const tabSwitchHandler = (event, value) => {
     setValue(value);
   };
   return (
     <div>
-      <Header baseUrl={baseUrl} />
+      <Header baseUrl={baseUrl} isLogin={isLogin} setIsLogin={setIsLogin} />
       <Tabs
         variant="fullWidth"
         indicatorColor="primary"

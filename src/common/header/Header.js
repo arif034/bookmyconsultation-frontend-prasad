@@ -26,10 +26,9 @@ const customStyles = {
   },
 };
 
-const Header = ({ baseUrl }) => {
+const Header = ({ baseUrl, isLogin, setIsLogin }) => {
   const [openModal, setOpenModal] = useState(false);
   const [value, setValue] = useState(0);
-  const [isLogin, setIsLogin] = useState(false);
 
   const toggleModalHandler = () => {
     setOpenModal(!openModal);
