@@ -1,0 +1,15 @@
+.header {
+  background-color: purple;
+  height: 40px;
+  padding: 11px;
+}
+
+.logo {
+  background-color: #ff7f7f;
+  height: 36px;
+  /* float: left; */
+}
+
+.login-button {
+  float: right;
+}
