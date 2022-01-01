@@ -23,3 +23,12 @@ code {
 .block {
   display: block;
 }
+
+.cardHeader {
+  background: purple;
+  color: white;
+  padding: 11px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+}
