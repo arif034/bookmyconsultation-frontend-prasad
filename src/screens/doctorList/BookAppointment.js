@@ -120,7 +120,7 @@ const BookAppointment = ({ baseUrl, doctor }) => {
 
   return (
     <div>
-      <Paper>
+      <Paper className="bookingModal">
         <CardHeader className="cardHeader" title="Book an Appointment" />
         <CardContent key={doctor.id}>
           <div>
@@ -151,10 +151,10 @@ const BookAppointment = ({ baseUrl, doctor }) => {
           </div>
           <div>
             <FormControl>
-              <InputLabel id="timeSlot">Time Slot</InputLabel>
+              <InputLabel id="timeSlotInput">Time Slot</InputLabel>
               <Select
-                labelId="demo-simple-select-helper-label"
-                id="demo-simple-select-helper"
+                labelId="timeSlotInput"
+                id="timeSlotInput"
                 value={selectedSlot}
                 onChange={handleSlotChange}
               >
@@ -199,6 +199,7 @@ const BookAppointment = ({ baseUrl, doctor }) => {
               />
             </FormControl>
           </div>
+          <br />
           <Button
             id="bookappointment"
             variant="contained"
