@@ -28,9 +28,7 @@ const RateAppointment = ({ appointment, baseUrl, toggleModalHandler }) => {
     } else {
       setRatingRequiredClass("none");
     }
-    // rating === 0
-    //   ? setRatingRequiredClass("block")
-    //   : setRatingRequiredClass("none");
+
     const accessToken = sessionStorage.getItem("accessToken");
 
     let data = {
@@ -56,14 +54,15 @@ const RateAppointment = ({ appointment, baseUrl, toggleModalHandler }) => {
 
       if (rawResponse.ok) {
         toggleModalHandler();
-        console.log("Rating Submitted successfully");
+        // console.log("Rating Submitted successfully");
         alert("Rating Submitted successfully");
       }
       if (rawResponse.status === 400) {
-        console.log("Bad Post Request");
+        alert("Bad Post Request");
+        // console.log("Bad Post Request");
       }
     } catch (e) {
-      console.log(e);
+      alert(e.message);
     }
   };
 
@@ -111,7 +110,6 @@ const RateAppointment = ({ appointment, baseUrl, toggleModalHandler }) => {
           <Button
             variant="contained"
             color="primary"
-            // size="small"
             onClick={submitRatingHandler}
           >
             Rate Appointment

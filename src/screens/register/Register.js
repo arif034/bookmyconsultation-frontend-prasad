@@ -11,17 +11,12 @@ import {
 const Register = ({ baseUrl, loginUser }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-
   const [email, setEmail] = useState("");
   const [invalidEmailClass, setInvalidEmailClass] = useState("none");
-
   const [password, setPassword] = useState("");
-
   const [mobile, setMobile] = useState("");
   const [invalidMobileClass, setInvalidMobileClass] = useState("none");
-
   const [isRegistered, setIsRegistered] = useState(false);
-
   const [anchorEl, setAnchorEl] = useState(null);
 
   const setParentAnchorElNull = () => {
@@ -94,16 +89,6 @@ const Register = ({ baseUrl, loginUser }) => {
       setInvalidMobileClass("none");
     }
 
-    // if (
-    //   firstName === "" ||
-    //   lastName === "" ||
-    //   email === "" ||
-    //   password === "" ||
-    //   mobile === ""
-    // ) {
-    //   return;
-    // }
-
     let data = {
       emailId: email,
       firstName: firstName,
@@ -111,7 +96,7 @@ const Register = ({ baseUrl, loginUser }) => {
       mobile: mobile,
       password: password,
     };
-    console.log(data);
+    // console.log(data);
 
     const url = baseUrl + "users/register";
     try {

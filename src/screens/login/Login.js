@@ -9,12 +9,12 @@ import {
   InputLabel,
 } from "@material-ui/core";
 
-const Login = ({ baseUrl, loginUser }) => {
+const Login = ({ loginUser }) => {
   const [email, setEmail] = useState("");
   const [invalidEmailClass, setInvalidEmailClass] = useState("none");
-
   const [password, setPassword] = useState("");
 
+  // Error Popoup State
   const [anchorEl, setAnchorEl] = useState(null);
 
   const setParentAnchorElNull = () => {
@@ -38,19 +38,16 @@ const Login = ({ baseUrl, loginUser }) => {
     // validate data
     if (email === "") {
       setAnchorEl(e.currentTarget.children[0]);
-      // setEmailRequiredError(true);
       return;
     }
     if (password === "") {
       setAnchorEl(e.currentTarget.children[2]);
-      // console.log(anchorEl);
-      // setPasswordRequiredError(true);
       return;
     }
-    const pattern =
+    const emailPattern =
       /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\\.,;:\s@"]{2,})$/i;
 
-    if (!email.match(pattern)) {
+    if (!email.match(emailPattern)) {
       setInvalidEmailClass("block");
       return;
     } else {
@@ -69,7 +66,6 @@ const Login = ({ baseUrl, loginUser }) => {
             value={email}
             type="email"
             onChange={changeEmailHandler}
-            // onFocus={(e) => setEmailElement(e.currentTarget)}
           />
 
           {email.length >= 1 && invalidEmailClass === "block" && (
@@ -81,9 +77,6 @@ const Login = ({ baseUrl, loginUser }) => {
             anchor={anchorEl}
             setParentAnchorElNull={setParentAnchorElNull}
           />
-          {/* {emailRequiredError === true && email.length === 0 && (
-            <span className="error-popup">Please fill out this field</span>
-          )} */}
         </FormControl>
         <br />
         <FormControl required margin="dense">
@@ -98,10 +91,6 @@ const Login = ({ baseUrl, loginUser }) => {
             anchor={anchorEl}
             setParentAnchorElNull={setParentAnchorElNull}
           />
-
-          {/* {passwordRequiredError === true && password.length === 0 && (
-            <span className="error-popup">Please fill out this field</span>
-          )} */}
         </FormControl>
         <br />
         <br />

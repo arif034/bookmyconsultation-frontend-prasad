@@ -32,14 +32,17 @@ const Header = ({ baseUrl, isLogin, setIsLogin }) => {
   const [openModal, setOpenModal] = useState(false);
   const [value, setValue] = useState(0);
 
+  // Toggle Modal Status
   const toggleModalHandler = () => {
     setOpenModal(!openModal);
   };
 
+  // Switch modal Tabs
   const tabSwitchHandler = (event, value) => {
     setValue(value);
   };
 
+  // Logout User
   const logoutHandler = async () => {
     const url = baseUrl + "auth/logout";
     const params = sessionStorage.getItem("accessToken");
@@ -60,11 +63,11 @@ const Header = ({ baseUrl, isLogin, setIsLogin }) => {
         sessionStorage.removeItem("accessToken");
         setIsLogin(false);
 
-        console.log("User Logged Out");
+        // console.log("User Logged Out");
       } else {
         const error = new Error();
         error.message = "Something went wrong.";
-        console.log("User Could not be logged out");
+        // console.log("User Could not be logged out");
         throw error;
       }
     } catch (e) {
@@ -72,9 +75,11 @@ const Header = ({ baseUrl, isLogin, setIsLogin }) => {
     }
   };
 
+  // Login User
   const loginUser = async (email, password) => {
     const url = baseUrl + "auth/login";
     // console.log(url);
+
     const params = window.btoa(email + ":" + password);
 
     try {
@@ -90,17 +95,18 @@ const Header = ({ baseUrl, isLogin, setIsLogin }) => {
       if (rawResponse.ok) {
         const response = await rawResponse.json();
         // console.log(response.accessToken);
-        // window.location.href = "/";
+
         window.sessionStorage.setItem("user-details", JSON.stringify(response));
         window.sessionStorage.setItem("userId", JSON.stringify(response.id));
         window.sessionStorage.setItem("accessToken", response.accessToken);
         setIsLogin(true);
         toggleModalHandler();
-        console.log("User Logged In");
+        // console.log("User Logged In");
       } else {
         const error = new Error();
         error.message = "Something went wrong.";
-        console.log("User Could not be logged in");
+        alert("Some Error Occurred. User Could not be logged in");
+        // console.log("User Could not be logged in");
         throw error;
       }
     } catch (e) {
@@ -108,6 +114,7 @@ const Header = ({ baseUrl, isLogin, setIsLogin }) => {
     }
   };
 
+  // Get Login state at render
   useEffect(() => {
     const isLoggedIn =
       sessionStorage.getItem("accessToken") == null ? false : true;
@@ -123,6 +130,7 @@ const Header = ({ baseUrl, isLogin, setIsLogin }) => {
         </span>
 
         <div className="login-button">
+          {/* Display login/logout button based on Auth status */}
           {!isLogin === true ? (
             <Button
               variant="contained"
@@ -156,7 +164,7 @@ const Header = ({ baseUrl, isLogin, setIsLogin }) => {
               <Tab label="Register" />
             </Tabs>
             <TabContainer>
-              {value === 0 && <Login baseUrl={baseUrl} loginUser={loginUser} />}
+              {value === 0 && <Login loginUser={loginUser} />}
               {value === 1 && (
                 <Register
                   baseUrl={baseUrl}

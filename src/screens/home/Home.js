@@ -40,7 +40,7 @@ const Home = ({ baseUrl }) => {
         throw error;
       }
     } catch (e) {
-      console.log(e.message);
+      alert(e.message);
     }
   };
   useEffect(() => {

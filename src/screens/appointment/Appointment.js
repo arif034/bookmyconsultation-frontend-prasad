@@ -63,7 +63,6 @@ const Appointment = ({ isLogin, baseUrl, userAppointments }) => {
               <Button
                 variant="contained"
                 color="primary"
-                // size="small"
                 onClick={() => {
                   setSelectedAppointment(appointment);
                   toggleModalHandler();

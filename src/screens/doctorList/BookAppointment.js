@@ -51,7 +51,7 @@ const BookAppointment = ({
 
   const getAvailableSlots = async () => {
     const url = `${baseUrl}doctors/${doctor.id}/timeSlots?date=${selectedDate}`;
-    console.log(url);
+    // console.log(url);
 
     try {
       const rawResponse = await fetch(url);
@@ -60,7 +60,7 @@ const BookAppointment = ({
         const response = await rawResponse.json();
         // console.log(response);
         setAvailableSlots(response.timeSlot);
-        console.log(response.timeSlot);
+        // console.log(response.timeSlot);
       } else {
         const error = new Error();
         error.message = "Some Error Occurred";
@@ -75,6 +75,7 @@ const BookAppointment = ({
     // console.log(e.currentTarget);
     if (e) e.preventDefault();
 
+    // Validation
     if (
       selectedSlot === "None" ||
       selectedSlot === null ||
@@ -83,12 +84,12 @@ const BookAppointment = ({
       setSlotRequiredClass("block");
       return;
     }
-    console.log("Book Appointment Handler called");
+    // console.log("Book Appointment Handler called");
     const emailId = JSON.parse(sessionStorage.getItem("userId"));
     const userDetails = JSON.parse(sessionStorage.getItem("user-details"));
     const accessToken = sessionStorage.getItem("accessToken");
     // console.log(JSON.parse(emailId));
-    console.log(accessToken, emailId, userDetails);
+    // console.log(accessToken, emailId, userDetails);
 
     if (emailId == null || userDetails == null || accessToken == null) {
       alert("Please Login to Book an appointment");
@@ -124,7 +125,7 @@ const BookAppointment = ({
       priorMedicalHistory: medicalHistory,
     };
 
-    console.log(data);
+    // console.log(data);
 
     const url = baseUrl + "appointments";
     try {
@@ -142,14 +143,14 @@ const BookAppointment = ({
       if (rawResponse.ok) {
         getUserAppointments();
         closeModalHandler();
-        console.log("Appointment booked successfully");
+        // console.log("Appointment booked successfully");
         alert("Appointment booked successfully");
       }
       if (rawResponse.status === 400) {
         alert("Either the slot is already booked or not available");
       }
     } catch (e) {
-      console.log(e);
+      alert(e.message);
     }
   };
 
@@ -159,7 +160,7 @@ const BookAppointment = ({
 
   useEffect(() => {
     getAvailableSlots();
-    console.log(currentUserAppoinments);
+    // console.log(currentUserAppoinments);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate]);
 
@@ -187,7 +188,6 @@ const BookAppointment = ({
                   margin="normal"
                   id="date-picker-inline"
                   label="Date picker inline"
-                  // defaultValue={dateFormatter(new Date())}
                   value={selectedDate}
                   onChange={handleDateChange}
                   KeyboardButtonProps={{

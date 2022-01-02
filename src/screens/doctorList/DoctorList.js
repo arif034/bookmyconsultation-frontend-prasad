@@ -49,7 +49,7 @@ const DoctorList = ({ baseUrl, getUserAppointments, userAppointments }) => {
 
   const getSpeciality = async () => {
     const url = baseUrl + "doctors/speciality";
-    console.log(url);
+    // console.log(url);
 
     try {
       const rawResponse = await fetch(url);
@@ -71,7 +71,7 @@ const DoctorList = ({ baseUrl, getUserAppointments, userAppointments }) => {
 
   const getDoctorsList = async () => {
     const url = baseUrl + "doctors";
-    console.log(url);
+    // console.log(url);
 
     try {
       const rawResponse = await fetch(url);
@@ -92,9 +92,9 @@ const DoctorList = ({ baseUrl, getUserAppointments, userAppointments }) => {
   };
 
   const getFilteredDoctors = async (query) => {
-    console.log(query);
+    // console.log(query);
     const url = baseUrl + "doctors?speciality=" + encodeURI(query);
-    console.log(url);
+    // console.log(url);
 
     try {
       const rawResponse = await fetch(url);
@@ -102,7 +102,7 @@ const DoctorList = ({ baseUrl, getUserAppointments, userAppointments }) => {
       if (rawResponse.ok) {
         const response = await rawResponse.json();
         setDoctorList(response);
-        console.log(doctorsList);
+        // console.log(doctorsList);
       } else {
         const error = new Error();
         error.message = "Some Error Occurred";
@@ -115,7 +115,7 @@ const DoctorList = ({ baseUrl, getUserAppointments, userAppointments }) => {
 
   const changeSpecialityHandler = (event) => {
     setSpeciality(event.target.value);
-    console.log(speciality);
+    // console.log(speciality);
     getFilteredDoctors(event.target.value);
   };
 
