@@ -8,7 +8,7 @@ import {
   Tab,
   CardHeader,
   CardContent,
-  Paper,
+  Card,
 } from "@material-ui/core";
 import TabContainer from "../tabContainer/TabContainer";
 import Login from "../../screens/login/Login";
@@ -148,7 +148,7 @@ const Header = ({ baseUrl, isLogin, setIsLogin }) => {
         onRequestClose={toggleModalHandler}
         style={customStyles}
       >
-        <Paper>
+        <Card>
           <CardHeader className="cardHeader" title="Authentication" />
           <CardContent>
             <Tabs value={value} onChange={tabSwitchHandler}>
@@ -166,7 +166,7 @@ const Header = ({ baseUrl, isLogin, setIsLogin }) => {
               )}
             </TabContainer>
           </CardContent>
-        </Paper>
+        </Card>
       </Modal>
     </div>
   );

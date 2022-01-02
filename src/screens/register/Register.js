@@ -14,7 +14,8 @@ const Register = ({ baseUrl, loginUser }) => {
   const [lastNameRequiredClass, setLastNameRequiredClass] = useState("none");
 
   const [email, setEmail] = useState("");
-  const [emailRequiredClass, setEmailRequiredClass] = useState("none");
+  const [invalidEmailClass, setInvalidEmailClass] = useState("none");
+  const [emailRequiredError, setEmailRequiredError] = useState(false);
 
   const [password, setPassword] = useState("");
   const [
@@ -22,8 +23,8 @@ const Register = ({ baseUrl, loginUser }) => {
     setRegistrationPasswordRequiredClass,
   ] = useState("none");
 
-  const [contact, setContact] = useState("");
-  const [contactRequiredClass, setContactRequiredClass] = useState("none");
+  const [mobile, setMobile] = useState("");
+  const [invalidMobileClass, setInvalidMobileClass] = useState("none");
 
   const [isRegistered, setIsRegistered] = useState(false);
 
@@ -35,42 +36,50 @@ const Register = ({ baseUrl, loginUser }) => {
   };
   const changeEmailHandler = (e) => {
     setEmail(e.target.value);
+    setInvalidEmailClass("none");
   };
 
   const changeRegistrationPasswordHandler = (e) => {
     setPassword(e.target.value);
   };
 
-  const changeContactHandler = (e) => {
-    setContact(e.target.value);
+  const changeMobileHandler = (e) => {
+    setMobile(e.target.value);
+    setInvalidMobileClass("none");
   };
 
-  const registerHandler = async () => {
+  const registerHandler = async (e) => {
+    if (e) e.preventDefault();
     // console.log("Register handler called");
 
     // Validation
-    firstName === ""
-      ? setFirstNameRequiredClass("block")
-      : setFirstNameRequiredClass("none");
-    lastName === ""
-      ? setLastNameRequiredClass("block")
-      : setLastNameRequiredClass("none");
-    email === ""
-      ? setEmailRequiredClass("block")
-      : setEmailRequiredClass("none");
-    password === ""
-      ? setRegistrationPasswordRequiredClass("block")
-      : setRegistrationPasswordRequiredClass("none");
-    contact === ""
-      ? setContactRequiredClass("block")
-      : setContactRequiredClass("none");
+    const emailPattern =
+      /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\\.,;:\s@"]{2,})$/i;
+
+    const mobilePattern = /^[6-9]\d{9}$/i;
+
+    email === "" ? setEmailRequiredError(true) : setEmailRequiredError(false);
+
+    if (!email.match(emailPattern)) {
+      setInvalidEmailClass("block");
+      return;
+    } else {
+      setInvalidEmailClass("none");
+    }
+
+    if (!mobile.match(mobilePattern)) {
+      setInvalidMobileClass("block");
+      return;
+    } else {
+      setInvalidMobileClass("none");
+    }
 
     if (
       firstName === "" ||
       lastName === "" ||
       email === "" ||
       password === "" ||
-      contact === ""
+      mobile === ""
     ) {
       return;
     }
@@ -78,10 +87,10 @@ const Register = ({ baseUrl, loginUser }) => {
       emailId: email,
       firstName: firstName,
       lastName: lastName,
-      mobile: contact,
+      mobile: mobile,
       password: password,
     };
-    // console.log(data);
+    console.log(data);
 
     const url = baseUrl + "users/register";
     try {
@@ -102,7 +111,7 @@ const Register = ({ baseUrl, loginUser }) => {
 
         setTimeout(function () {
           loginUser(email, password);
-        }, 3000);
+        }, 2000);
       }
     } catch (e) {
       alert(e.message);
@@ -110,70 +119,76 @@ const Register = ({ baseUrl, loginUser }) => {
   };
 
   return (
-    <>
-      <FormControl required>
-        <InputLabel htmlFor="firstname">First Name</InputLabel>
-        <Input type="text" id="firstname" onChange={changeFirstNameHandler} />
-        <FormHelperText className={firstNameRequiredClass}>
-          <span className="red">required</span>
-        </FormHelperText>
-      </FormControl>
-      <br />
-      <br />
-
-      <FormControl required>
-        <InputLabel htmlFor="lastname">Last Name</InputLabel>
-        <Input type="text" id="lastname" onChange={changeLastNameHandler} />
-        <FormHelperText className={lastNameRequiredClass}>
-          <span className="red">required</span>
-        </FormHelperText>
-      </FormControl>
-      <br />
-      <br />
-
-      <FormControl required>
-        <InputLabel htmlFor="email">Email Id</InputLabel>
-        <Input id="email" type="email" onChange={changeEmailHandler} />
-        <FormHelperText className={emailRequiredClass}>
-          <span className="red">required</span>
-        </FormHelperText>
-      </FormControl>
-      <br />
-      <br />
-
-      <FormControl required>
-        <InputLabel htmlFor="registrationPassword">Password</InputLabel>
-        <Input
-          type="password"
-          id="registrationPassword"
-          onChange={changeRegistrationPasswordHandler}
-        />
-        <FormHelperText className={registrationPasswordRequiredClass}>
-          <span className="red">required</span>
-        </FormHelperText>
-      </FormControl>
-      <br />
-      <br />
-
-      <FormControl required>
-        <InputLabel htmlFor="contact">Mobile No.</InputLabel>
-        <Input id="contact" onChange={changeContactHandler} />
-        <FormHelperText className={contactRequiredClass}>
-          <span className="red">required</span>
-        </FormHelperText>
-      </FormControl>
-      <br />
-      <br />
-      {isRegistered === true && (
-        <FormControl>
-          <span>Registration Successful.</span>
+    <div>
+      <form onSubmit={registerHandler} autoComplete="off" noValidate>
+        <FormControl required>
+          <InputLabel htmlFor="firstname">First Name</InputLabel>
+          <Input type="text" id="firstname" onChange={changeFirstNameHandler} />
+          <FormHelperText className={firstNameRequiredClass}>
+            <span className="red">required</span>
+          </FormHelperText>
         </FormControl>
-      )}
-      <br />
-      <Button variant="contained" color="primary" onClick={registerHandler}>
-        REGISTER
-      </Button>
-    </>
+        <br />
+        <br />
+
+        <FormControl>
+          <InputLabel htmlFor="lastname">Last Name</InputLabel>
+          <Input type="text" id="lastname" onChange={changeLastNameHandler} />
+          <FormHelperText className={lastNameRequiredClass}>
+            <span className="red">required</span>
+          </FormHelperText>
+        </FormControl>
+        <br />
+        <br />
+
+        <FormControl required>
+          <InputLabel htmlFor="email">Email Id</InputLabel>
+          <Input id="email" type="email" onChange={changeEmailHandler} />
+          {email.length >= 1 && invalidEmailClass === "block" && (
+            <FormHelperText className={invalidEmailClass}>
+              <span className="red">Enter valid Email</span>
+            </FormHelperText>
+          )}
+        </FormControl>
+        <br />
+        <br />
+
+        <FormControl required>
+          <InputLabel htmlFor="registrationPassword">Password</InputLabel>
+          <Input
+            type="password"
+            id="registrationPassword"
+            onChange={changeRegistrationPasswordHandler}
+          />
+          <FormHelperText className={registrationPasswordRequiredClass}>
+            <span className="red">required</span>
+          </FormHelperText>
+        </FormControl>
+        <br />
+        <br />
+
+        <FormControl required>
+          <InputLabel htmlFor="mobile">Mobile No.</InputLabel>
+          <Input id="mobile" onChange={changeMobileHandler} value={mobile} />
+          {mobile.length >= 1 && invalidMobileClass === "block" && (
+            <FormHelperText className={invalidMobileClass}>
+              <span className="red">Enter valid mobile number</span>
+            </FormHelperText>
+          )}
+        </FormControl>
+        <br />
+        <br />
+        {isRegistered === true && (
+          <FormControl>
+            <span>Registration Successful.</span>
+          </FormControl>
+        )}
+        <br />
+        <Button variant="contained" color="primary" type="submit">
+          REGISTER
+        </Button>
+      </form>
+    </div>
   );
 };
 
