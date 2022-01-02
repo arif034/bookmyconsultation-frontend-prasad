@@ -3,6 +3,8 @@ import RateAppointment from "../appointment/RateAppointment";
 import { Paper, Typography, Button } from "@material-ui/core";
 import Modal from "react-modal";
 
+Modal.setAppElement(document.getElementById("root"));
+
 const customStyles = {
   content: {
     top: "50%",

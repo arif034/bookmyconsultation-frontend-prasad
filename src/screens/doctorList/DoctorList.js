@@ -14,6 +14,8 @@ import Modal from "react-modal";
 import DoctorDetails from "./DoctorDetails";
 import BookAppointment from "./BookAppointment";
 
+Modal.setAppElement(document.getElementById("root"));
+
 const customStyles = {
   content: {
     top: "50%",

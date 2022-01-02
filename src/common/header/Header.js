@@ -2,18 +2,12 @@ import React, { useState, useEffect } from "react";
 import "./Header.css";
 import logo from "../../assets/logo.jpeg";
 import Modal from "react-modal";
-import {
-  Button,
-  Tabs,
-  Tab,
-  //   Typography,
-  //   Card,
-  //   CardHeader,
-  //   CardContent,
-} from "@material-ui/core";
+import { Button, Tabs, Tab } from "@material-ui/core";
 import TabContainer from "../tabContainer/TabContainer";
 import Login from "../../screens/login/Login";
 import Register from "../../screens/register/Register";
+
+Modal.setAppElement(document.getElementById("root"));
 
 const customStyles = {
   content: {
