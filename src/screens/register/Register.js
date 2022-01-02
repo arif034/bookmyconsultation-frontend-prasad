@@ -110,7 +110,7 @@ const Register = ({ baseUrl, loginUser }) => {
   };
 
   return (
-    <div>
+    <>
       <FormControl required>
         <InputLabel htmlFor="firstname">First Name</InputLabel>
         <Input type="text" id="firstname" onChange={changeFirstNameHandler} />
@@ -156,7 +156,7 @@ const Register = ({ baseUrl, loginUser }) => {
       <br />
 
       <FormControl required>
-        <InputLabel htmlFor="contact">Contact No</InputLabel>
+        <InputLabel htmlFor="contact">Mobile No.</InputLabel>
         <Input id="contact" onChange={changeContactHandler} />
         <FormHelperText className={contactRequiredClass}>
           <span className="red">required</span>
@@ -173,7 +173,7 @@ const Register = ({ baseUrl, loginUser }) => {
       <Button variant="contained" color="primary" onClick={registerHandler}>
         REGISTER
       </Button>
-    </div>
+    </>
   );
 };
 

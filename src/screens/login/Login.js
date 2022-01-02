@@ -43,7 +43,7 @@ const Login = ({ baseUrl, loginUser }) => {
 
   return (
     <div>
-      <FormControl required>
+      <FormControl required margin="dense">
         <InputLabel htmlFor="email">Email</InputLabel>
         <Input id="email" type="email" onChange={changeEmailHandler} />
         <FormHelperText className={emailRequiredClass}>
@@ -51,7 +51,7 @@ const Login = ({ baseUrl, loginUser }) => {
         </FormHelperText>
       </FormControl>
       <br />
-      <FormControl required>
+      <FormControl required margin="dense">
         <InputLabel htmlFor="password">Password</InputLabel>
         <Input id="password" type="text" onChange={changePasswordHandler} />
         <FormHelperText className={passwordRequiredClass}>

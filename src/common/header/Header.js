@@ -2,7 +2,14 @@ import React, { useState, useEffect } from "react";
 import "./Header.css";
 import logo from "../../assets/logo.jpeg";
 import Modal from "react-modal";
-import { Button, Tabs, Tab } from "@material-ui/core";
+import {
+  Button,
+  Tabs,
+  Tab,
+  CardHeader,
+  CardContent,
+  Paper,
+} from "@material-ui/core";
 import TabContainer from "../tabContainer/TabContainer";
 import Login from "../../screens/login/Login";
 import Register from "../../screens/register/Register";
@@ -15,13 +22,14 @@ const customStyles = {
     left: "50%",
     right: "auto",
     bottom: "auto",
+    padding: "0px",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
   },
 };
 
 const Header = ({ baseUrl, isLogin, setIsLogin }) => {
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(true);
   const [value, setValue] = useState(0);
 
   const toggleModalHandler = () => {
@@ -140,20 +148,25 @@ const Header = ({ baseUrl, isLogin, setIsLogin }) => {
         onRequestClose={toggleModalHandler}
         style={customStyles}
       >
-        <Tabs value={value} onChange={tabSwitchHandler}>
-          <Tab label="Login" />
-          <Tab label="Register" />
-        </Tabs>
-        <TabContainer>
-          {value === 0 && <Login baseUrl={baseUrl} loginUser={loginUser} />}
-          {value === 1 && (
-            <Register
-              baseUrl={baseUrl}
-              toggleModalHandler={toggleModalHandler}
-              loginUser={loginUser}
-            />
-          )}
-        </TabContainer>
+        <Paper>
+          <CardHeader className="cardHeader" title="Authentication" />
+          <CardContent>
+            <Tabs value={value} onChange={tabSwitchHandler}>
+              <Tab label="Login" />
+              <Tab label="Register" />
+            </Tabs>
+            <TabContainer>
+              {value === 0 && <Login baseUrl={baseUrl} loginUser={loginUser} />}
+              {value === 1 && (
+                <Register
+                  baseUrl={baseUrl}
+                  toggleModalHandler={toggleModalHandler}
+                  loginUser={loginUser}
+                />
+              )}
+            </TabContainer>
+          </CardContent>
+        </Paper>
       </Modal>
     </div>
   );
