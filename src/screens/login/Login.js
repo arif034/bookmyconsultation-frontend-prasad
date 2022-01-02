@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import ErrorPopover from "../../common/ErrorPopover";
+
 import {
   Button,
   FormControl,
@@ -10,10 +12,14 @@ import {
 const Login = ({ baseUrl, loginUser }) => {
   const [email, setEmail] = useState("");
   const [invalidEmailClass, setInvalidEmailClass] = useState("none");
-  const [emailRequiredError, setEmailRequiredError] = useState(false);
 
   const [password, setPassword] = useState("");
-  const [passwordRequiredError, setPasswordRequiredError] = useState(false);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const setParentAnchorElNull = () => {
+    setAnchorEl(null);
+  };
 
   const changeEmailHandler = (event) => {
     setEmail(event.target.value);
@@ -26,15 +32,19 @@ const Login = ({ baseUrl, loginUser }) => {
 
   const loginHandler = async (e) => {
     if (e) e.preventDefault();
+    // console.log(e.currentTarget.children);
     // alert("Login Function Called");
 
     // validate data
     if (email === "") {
-      setEmailRequiredError(true);
+      setAnchorEl(e.currentTarget.children[0]);
+      // setEmailRequiredError(true);
       return;
     }
     if (password === "") {
-      setPasswordRequiredError(true);
+      setAnchorEl(e.currentTarget.children[2]);
+      // console.log(anchorEl);
+      // setPasswordRequiredError(true);
       return;
     }
     const pattern =
@@ -67,9 +77,13 @@ const Login = ({ baseUrl, loginUser }) => {
               <span className="red">Enter valid Email</span>
             </FormHelperText>
           )}
-          {emailRequiredError === true && email.length === 0 && (
+          <ErrorPopover
+            anchor={anchorEl}
+            setParentAnchorElNull={setParentAnchorElNull}
+          />
+          {/* {emailRequiredError === true && email.length === 0 && (
             <span className="error-popup">Please fill out this field</span>
-          )}
+          )} */}
         </FormControl>
         <br />
         <FormControl required margin="dense">
@@ -80,9 +94,14 @@ const Login = ({ baseUrl, loginUser }) => {
             value={password}
             onChange={changePasswordHandler}
           />
-          {passwordRequiredError === true && password.length === 0 && (
+          <ErrorPopover
+            anchor={anchorEl}
+            setParentAnchorElNull={setParentAnchorElNull}
+          />
+
+          {/* {passwordRequiredError === true && password.length === 0 && (
             <span className="error-popup">Please fill out this field</span>
-          )}
+          )} */}
         </FormControl>
         <br />
         <br />

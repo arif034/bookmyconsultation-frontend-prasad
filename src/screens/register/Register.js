@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ErrorPopover from "../../common/ErrorPopover";
 import {
   FormControl,
   InputLabel,
@@ -9,24 +10,23 @@ import {
 
 const Register = ({ baseUrl, loginUser }) => {
   const [firstName, setFirstName] = useState("");
-  const [firstNameRequiredClass, setFirstNameRequiredClass] = useState("none");
   const [lastName, setLastName] = useState("");
-  const [lastNameRequiredClass, setLastNameRequiredClass] = useState("none");
 
   const [email, setEmail] = useState("");
   const [invalidEmailClass, setInvalidEmailClass] = useState("none");
-  const [emailRequiredError, setEmailRequiredError] = useState(false);
 
   const [password, setPassword] = useState("");
-  const [
-    registrationPasswordRequiredClass,
-    setRegistrationPasswordRequiredClass,
-  ] = useState("none");
 
   const [mobile, setMobile] = useState("");
   const [invalidMobileClass, setInvalidMobileClass] = useState("none");
 
   const [isRegistered, setIsRegistered] = useState(false);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const setParentAnchorElNull = () => {
+    setAnchorEl(null);
+  };
 
   const changeFirstNameHandler = (e) => {
     setFirstName(e.target.value);
@@ -50,15 +50,35 @@ const Register = ({ baseUrl, loginUser }) => {
 
   const registerHandler = async (e) => {
     if (e) e.preventDefault();
+    // console.log(e.currentTarget.children);
     // console.log("Register handler called");
 
     // Validation
+    if (firstName === "") {
+      setAnchorEl(e.currentTarget.children[0]);
+      return;
+    }
+    if (lastName === "") {
+      setAnchorEl(e.currentTarget.children[3]);
+      return;
+    }
+    if (email === "") {
+      setAnchorEl(e.currentTarget.children[6]);
+      return;
+    }
+    if (password === "") {
+      setAnchorEl(e.currentTarget.children[9]);
+      return;
+    }
+    if (mobile === "") {
+      setAnchorEl(e.currentTarget.children[12]);
+      return;
+    }
+
     const emailPattern =
       /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\\.,;:\s@"]{2,})$/i;
 
     const mobilePattern = /^[6-9]\d{9}$/i;
-
-    email === "" ? setEmailRequiredError(true) : setEmailRequiredError(false);
 
     if (!email.match(emailPattern)) {
       setInvalidEmailClass("block");
@@ -74,15 +94,16 @@ const Register = ({ baseUrl, loginUser }) => {
       setInvalidMobileClass("none");
     }
 
-    if (
-      firstName === "" ||
-      lastName === "" ||
-      email === "" ||
-      password === "" ||
-      mobile === ""
-    ) {
-      return;
-    }
+    // if (
+    //   firstName === "" ||
+    //   lastName === "" ||
+    //   email === "" ||
+    //   password === "" ||
+    //   mobile === ""
+    // ) {
+    //   return;
+    // }
+
     let data = {
       emailId: email,
       firstName: firstName,
@@ -129,9 +150,10 @@ const Register = ({ baseUrl, loginUser }) => {
             onChange={changeFirstNameHandler}
             value={firstName}
           />
-          <FormHelperText className={firstNameRequiredClass}>
-            <span className="red">required</span>
-          </FormHelperText>
+          <ErrorPopover
+            anchor={anchorEl}
+            setParentAnchorElNull={setParentAnchorElNull}
+          />
         </FormControl>
         <br />
         <br />
@@ -144,9 +166,10 @@ const Register = ({ baseUrl, loginUser }) => {
             onChange={changeLastNameHandler}
             value={lastName}
           />
-          <FormHelperText className={lastNameRequiredClass}>
-            <span className="red">required</span>
-          </FormHelperText>
+          <ErrorPopover
+            anchor={anchorEl}
+            setParentAnchorElNull={setParentAnchorElNull}
+          />
         </FormControl>
         <br />
         <br />
@@ -164,6 +187,10 @@ const Register = ({ baseUrl, loginUser }) => {
               <span className="red">Enter valid Email</span>
             </FormHelperText>
           )}
+          <ErrorPopover
+            anchor={anchorEl}
+            setParentAnchorElNull={setParentAnchorElNull}
+          />
         </FormControl>
         <br />
         <br />
@@ -176,9 +203,10 @@ const Register = ({ baseUrl, loginUser }) => {
             onChange={changeRegistrationPasswordHandler}
             value={password}
           />
-          <FormHelperText className={registrationPasswordRequiredClass}>
-            <span className="red">required</span>
-          </FormHelperText>
+          <ErrorPopover
+            anchor={anchorEl}
+            setParentAnchorElNull={setParentAnchorElNull}
+          />
         </FormControl>
         <br />
         <br />
@@ -191,6 +219,10 @@ const Register = ({ baseUrl, loginUser }) => {
               <span className="red">Enter valid mobile number</span>
             </FormHelperText>
           )}
+          <ErrorPopover
+            anchor={anchorEl}
+            setParentAnchorElNull={setParentAnchorElNull}
+          />
         </FormControl>
         <br />
         <br />
