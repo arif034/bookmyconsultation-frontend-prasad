@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import RateAppointment from "../appointment/RateAppointment";
 import { Paper, Typography, Button } from "@material-ui/core";
 import Modal from "react-modal";
@@ -18,55 +18,14 @@ const customStyles = {
   },
 };
 
-const Appointment = ({ isLogin, baseUrl }) => {
-  const [userAppointments, setUserAppointments] = useState([]);
-  const emailId = JSON.parse(sessionStorage.getItem("userId"));
-  // eslint-disable-next-line
-  const [appointment, setAppointment] = useState([]);
+const Appointment = ({ isLogin, baseUrl, userAppointments }) => {
   const [selectedAppointment, setSelectedAppointment] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const getUserAppointments = async () => {
-    const url = `${baseUrl}users/${emailId}/appointments`;
-    const accessToken = sessionStorage.getItem("accessToken");
-    // console.log(url, accessToken);
-
-    try {
-      // debugger;
-      const rawResponse = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-          Accept: "application/json;Charset=UTF-8",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      if (rawResponse.ok) {
-        const response = await rawResponse.json();
-        // console.log(response);
-        setUserAppointments(response);
-        // console.log(setAvailableSlots);
-      } else {
-        const error = new Error();
-        error.message = "Some Error Occurred";
-        throw error;
-      }
-    } catch (e) {
-      console.log(e.message);
-    }
-  };
 
   const toggleModalHandler = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  useEffect(() => {
-    if (isLogin === true) {
-      getUserAppointments();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLogin]);
   return (
     <div>
       {!isLogin ? (
@@ -123,6 +82,7 @@ const Appointment = ({ isLogin, baseUrl }) => {
             <RateAppointment
               baseUrl={baseUrl}
               appointment={selectedAppointment}
+              toggleModalHandler={toggleModalHandler}
             />
           </Modal>
         </div>

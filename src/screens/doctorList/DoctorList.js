@@ -39,7 +39,7 @@ const bookingsModal = {
   },
 };
 
-const DoctorList = ({ baseUrl }) => {
+const DoctorList = ({ baseUrl, getUserAppointments }) => {
   const [speciality, setSpeciality] = useState("");
   const [specialityList, setSpecialityList] = useState([]);
   const [doctorsList, setDoctorList] = useState([]);
@@ -124,8 +124,8 @@ const DoctorList = ({ baseUrl }) => {
   };
 
   useEffect(() => {
-    getSpeciality();
     getDoctorsList();
+    getSpeciality();
     // console.log(specialityList);
     // eslint-disable-next-line
   }, []);
@@ -144,6 +144,9 @@ const DoctorList = ({ baseUrl }) => {
           style={{ minWidth: "200px" }}
           onChange={changeSpecialityHandler}
         >
+          <MenuItem key={"spec" + "none"} value={""}>
+            NONE
+          </MenuItem>
           {specialityList.map((item) => (
             <MenuItem key={"spec" + item} value={item}>
               {item}
@@ -209,7 +212,12 @@ const DoctorList = ({ baseUrl }) => {
         >
           {modalType === "details" && <DoctorDetails doctor={doctor} />}
           {modalType === "bookings" && (
-            <BookAppointment baseUrl={baseUrl} doctor={doctor} />
+            <BookAppointment
+              baseUrl={baseUrl}
+              doctor={doctor}
+              getUserAppointments={getUserAppointments}
+              closeModalHandler={closeModalHandler}
+            />
           )}
         </Modal>
       </Grid>

@@ -11,15 +11,26 @@ import {
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 
-const RateAppointment = ({ appointment, baseUrl }) => {
+const RateAppointment = ({ appointment, baseUrl, toggleModalHandler }) => {
   const [comments, setComments] = useState("");
   const [rating, setRating] = useState(0);
   const [ratingRequiredClass, setRatingRequiredClass] = useState("none");
 
+  const ratingChangeHanler = (event, newValue) => {
+    setRating(newValue);
+    setRatingRequiredClass("none");
+  };
+
   const submitRatingHandler = async () => {
-    rating === 0
-      ? setRatingRequiredClass("block")
-      : setRatingRequiredClass("none");
+    if (rating === 0 || rating === null || ratingRequiredClass === "block") {
+      setRatingRequiredClass("block");
+      return;
+    } else {
+      setRatingRequiredClass("none");
+    }
+    // rating === 0
+    //   ? setRatingRequiredClass("block")
+    //   : setRatingRequiredClass("none");
     const accessToken = sessionStorage.getItem("accessToken");
 
     let data = {
@@ -32,7 +43,7 @@ const RateAppointment = ({ appointment, baseUrl }) => {
     // console.log(url, data, accessToken);
 
     try {
-      //   debugger;
+      // debugger;
       const rawResponse = await fetch(url, {
         method: "POST",
         headers: {
@@ -44,7 +55,9 @@ const RateAppointment = ({ appointment, baseUrl }) => {
       });
 
       if (rawResponse.ok) {
+        toggleModalHandler();
         console.log("Rating Submitted successfully");
+        alert("Rating Submitted successfully");
       }
       if (rawResponse.status === 400) {
         console.log("Bad Post Request");
@@ -85,13 +98,11 @@ const RateAppointment = ({ appointment, baseUrl }) => {
               <Rating
                 name={appointment.appointmentId}
                 value={rating}
-                onChange={(event, newValue) => {
-                  setRating(newValue);
-                }}
+                onChange={ratingChangeHanler}
               />
             </div>
             <FormHelperText className={ratingRequiredClass}>
-              <span className="red">Select a rating</span>
+              <span className="red">Submit a rating</span>
             </FormHelperText>
           </FormControl>
         </div>

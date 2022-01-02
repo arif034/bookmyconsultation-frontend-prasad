@@ -18,7 +18,12 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 
-const BookAppointment = ({ baseUrl, doctor }) => {
+const BookAppointment = ({
+  baseUrl,
+  doctor,
+  getUserAppointments,
+  closeModalHandler,
+}) => {
   let doctorName = `${doctor.firstName} ${doctor.lastName}`;
   const dateFormatter = (date) => {
     return date.toISOString().split("T")[0];
@@ -27,7 +32,7 @@ const BookAppointment = ({ baseUrl, doctor }) => {
   const [selectedDate, setSelectedDate] = useState(dateFormatter(new Date()));
   const [selectedSlot, setSelectedSlot] = useState("");
   const [availableSlots, setAvailableSlots] = useState(["None"]);
-  const [medicalHistory, setMedicationHistory] = useState("");
+  const [medicalHistory, setMedicalHistory] = useState("");
   const [symptoms, setSymptoms] = useState("");
   const [slotRequiredClass, setSlotRequiredClass] = useState("none");
 
@@ -37,6 +42,7 @@ const BookAppointment = ({ baseUrl, doctor }) => {
 
   const handleSlotChange = (e) => {
     setSelectedSlot(e.target.value);
+    setSlotRequiredClass("none");
   };
 
   const getAvailableSlots = async () => {
@@ -50,7 +56,7 @@ const BookAppointment = ({ baseUrl, doctor }) => {
         const response = await rawResponse.json();
         // console.log(response);
         setAvailableSlots(response.timeSlot);
-        // console.log(setAvailableSlots);
+        console.log(response.timeSlot);
       } else {
         const error = new Error();
         error.message = "Some Error Occurred";
@@ -61,7 +67,10 @@ const BookAppointment = ({ baseUrl, doctor }) => {
     }
   };
 
-  const bookAppointmentHandler = async () => {
+  const bookAppointmentHandler = async (e) => {
+    // console.log(e.currentTarget);
+    if (e) e.preventDefault();
+
     if (
       selectedSlot === "None" ||
       selectedSlot === null ||
@@ -75,7 +84,13 @@ const BookAppointment = ({ baseUrl, doctor }) => {
     const userDetails = JSON.parse(sessionStorage.getItem("user-details"));
     const accessToken = sessionStorage.getItem("accessToken");
     // console.log(JSON.parse(emailId));
-    console.log(accessToken);
+    console.log(accessToken, emailId, userDetails);
+
+    if (emailId == null || userDetails == null || accessToken == null) {
+      alert("Please Login to Book an appointment");
+      closeModalHandler();
+      return;
+    }
 
     let data = {
       doctorId: doctor.id,
@@ -91,7 +106,7 @@ const BookAppointment = ({ baseUrl, doctor }) => {
     console.log(data);
     const url = baseUrl + "appointments";
     try {
-      //   debugger;
+      // debugger;
       const rawResponse = await fetch(url, {
         method: "POST",
         headers: {
@@ -103,7 +118,10 @@ const BookAppointment = ({ baseUrl, doctor }) => {
       });
 
       if (rawResponse.ok) {
+        getUserAppointments();
+        closeModalHandler();
         console.log("Appointment booked successfully");
+        alert("Appointment booked successfully");
       }
       if (rawResponse.status === 400) {
         alert("Either the slot is already booked or not available");
@@ -112,6 +130,10 @@ const BookAppointment = ({ baseUrl, doctor }) => {
       console.log(e);
     }
   };
+
+  // useEffect(() => {
+  //   setSelectedDate(dateFormatter(new Date()));
+  // }, []);
 
   useEffect(() => {
     getAvailableSlots();
@@ -123,91 +145,96 @@ const BookAppointment = ({ baseUrl, doctor }) => {
       <Paper className="bookingModal">
         <CardHeader className="cardHeader" title="Book an Appointment" />
         <CardContent key={doctor.id}>
-          <div>
-            <TextField
-              disabled
-              id="standard-disabled"
-              label="DoctorName"
-              required
-              defaultValue={doctorName}
-            />
-          </div>
-          <div>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="MM/dd/yyyy"
-                margin="normal"
-                id="date-picker-inline"
-                label="Date picker inline"
-                value={selectedDate}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
+          <form noValidate autoComplete="off" onSubmit={bookAppointmentHandler}>
+            <div>
+              <TextField
+                disabled
+                id="standard-disabled"
+                label="DoctorName"
+                required
+                value={doctorName}
               />
-            </MuiPickersUtilsProvider>
-          </div>
-          <div>
-            <FormControl>
-              <InputLabel id="timeSlotInput">Time Slot</InputLabel>
-              <Select
-                labelId="timeSlotInput"
-                id="timeSlotInput"
-                value={selectedSlot}
-                onChange={handleSlotChange}
-              >
-                <MenuItem value="None">
-                  <em>None</em>
-                </MenuItem>
-                {availableSlots.map((slot) => (
-                  <MenuItem key={"id" + slot} value={slot}>
-                    {slot}
+            </div>
+            <div>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="date-picker-inline"
+                  label="Date picker inline"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </div>
+            <div>
+              <FormControl>
+                <InputLabel id="timeSlotInput">Time Slot</InputLabel>
+                <Select
+                  labelId="timeSlotInput"
+                  id="timeSlotInput"
+                  value={selectedSlot}
+                  onChange={handleSlotChange}
+                >
+                  <MenuItem value="None">
+                    <em>None</em>
                   </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText className={slotRequiredClass}>
-                <span className="red">Select a time slot</span>
-              </FormHelperText>
-            </FormControl>
-          </div>
-          <br />
-          <div>
-            <FormControl>
-              <TextField
-                id="standard-multiline-static"
-                label="Medical History"
-                multiline
-                rows={4}
-                defaultValue=""
-                onChange={(e) => setMedicationHistory(e.target.value)}
-              />
-            </FormControl>
-          </div>
-          <br />
-          <div>
-            <FormControl>
-              <TextField
-                id="standard-multiline-static"
-                label="Symptoms"
-                multiline
-                rows={4}
-                defaultValue=""
-                placeholder="ex.Cold, Swelling, etc"
-                onChange={(e) => setSymptoms(e.target.value)}
-              />
-            </FormControl>
-          </div>
-          <br />
-          <Button
-            id="bookappointment"
-            variant="contained"
-            color="primary"
-            onClick={bookAppointmentHandler}
-          >
-            Book Appointment
-          </Button>
+                  <MenuItem value="05PM-06PM">
+                    <em>05PM-06PM</em>
+                  </MenuItem>
+                  {availableSlots.map((slot, key) => (
+                    <MenuItem key={key} value={slot}>
+                      {slot}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText className={slotRequiredClass}>
+                  <span className="red">Select a time slot</span>
+                </FormHelperText>
+              </FormControl>
+            </div>
+            <br />
+            <div>
+              <FormControl>
+                <TextField
+                  id="standard-multiline-static"
+                  label="Medical History"
+                  multiline
+                  rows={4}
+                  value={medicalHistory}
+                  onChange={(e) => setMedicalHistory(e.target.value)}
+                />
+              </FormControl>
+            </div>
+            <br />
+            <div>
+              <FormControl>
+                <TextField
+                  id="standard-multiline-static"
+                  label="Symptoms"
+                  multiline
+                  rows={4}
+                  value={symptoms}
+                  placeholder="ex.Cold, Swelling, etc"
+                  onChange={(e) => setSymptoms(e.target.value)}
+                />
+              </FormControl>
+            </div>
+            <br />
+            <Button
+              id="bookappointment"
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
+              Book Appointment
+            </Button>
+          </form>
         </CardContent>
       </Paper>
     </div>

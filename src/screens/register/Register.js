@@ -123,7 +123,12 @@ const Register = ({ baseUrl, loginUser }) => {
       <form onSubmit={registerHandler} autoComplete="off" noValidate>
         <FormControl required>
           <InputLabel htmlFor="firstname">First Name</InputLabel>
-          <Input type="text" id="firstname" onChange={changeFirstNameHandler} />
+          <Input
+            type="text"
+            id="firstname"
+            onChange={changeFirstNameHandler}
+            value={firstName}
+          />
           <FormHelperText className={firstNameRequiredClass}>
             <span className="red">required</span>
           </FormHelperText>
@@ -131,9 +136,14 @@ const Register = ({ baseUrl, loginUser }) => {
         <br />
         <br />
 
-        <FormControl>
+        <FormControl required>
           <InputLabel htmlFor="lastname">Last Name</InputLabel>
-          <Input type="text" id="lastname" onChange={changeLastNameHandler} />
+          <Input
+            type="text"
+            id="lastname"
+            onChange={changeLastNameHandler}
+            value={lastName}
+          />
           <FormHelperText className={lastNameRequiredClass}>
             <span className="red">required</span>
           </FormHelperText>
@@ -143,7 +153,12 @@ const Register = ({ baseUrl, loginUser }) => {
 
         <FormControl required>
           <InputLabel htmlFor="email">Email Id</InputLabel>
-          <Input id="email" type="email" onChange={changeEmailHandler} />
+          <Input
+            id="email"
+            type="email"
+            onChange={changeEmailHandler}
+            value={email}
+          />
           {email.length >= 1 && invalidEmailClass === "block" && (
             <FormHelperText className={invalidEmailClass}>
               <span className="red">Enter valid Email</span>
@@ -159,6 +174,7 @@ const Register = ({ baseUrl, loginUser }) => {
             type="password"
             id="registrationPassword"
             onChange={changeRegistrationPasswordHandler}
+            value={password}
           />
           <FormHelperText className={registrationPasswordRequiredClass}>
             <span className="red">required</span>
