@@ -7,6 +7,7 @@ Modal.setAppElement(document.getElementById("root"));
 
 const customStyles = {
   content: {
+    width: "50%",
     top: "50%",
     left: "50%",
     right: "auto",
@@ -22,6 +23,7 @@ const Appointment = ({ isLogin, baseUrl }) => {
   const emailId = JSON.parse(sessionStorage.getItem("userId"));
   // eslint-disable-next-line
   const [appointment, setAppointment] = useState([]);
+  const [selectedAppointment, setSelectedAppointment] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const getUserAppointments = async () => {
@@ -67,47 +69,62 @@ const Appointment = ({ isLogin, baseUrl }) => {
   }, [isLogin]);
   return (
     <div>
-      {!isLogin === true ? (
-        "Login to see Appointments"
+      {!isLogin ? (
+        <Typography variant="h6" component="h5" className="noLoginText">
+          Login to see appointments
+        </Typography>
       ) : (
         <div>
           {userAppointments.map((appointment) => (
-            <Paper variant="outlined" key={appointment.appointmentId}>
-              <Typography variant="body1">
+            <Paper
+              className="appointmentContainer"
+              variant="elevation"
+              elevation={3}
+              key={appointment.appointmentId}
+            >
+              <Typography
+                variant="h6"
+                className="hasTextBlack"
+                component="h5"
+                gutterBottom
+              >
                 Dr. {appointment.doctorName}
               </Typography>
-              <Typography variant="body2">
+              <Typography variant="body1" className="hasTextBlack">
                 Date: {appointment.appointmentDate}
               </Typography>
-              <Typography variant="body2">
+              <Typography variant="body1" className="hasTextBlack">
                 Symptoms: {appointment.symptoms}
               </Typography>
-              <Typography variant="body2">
+              <Typography variant="body1" className="hasTextBlack">
                 priorMedicalHistory: {appointment.priorMedicalHistory}
               </Typography>
+              <br />
               <br />
               <Button
                 variant="contained"
                 color="primary"
-                size="small"
+                // size="small"
                 onClick={() => {
-                  setAppointment(appointment);
+                  setSelectedAppointment(appointment);
                   toggleModalHandler();
                 }}
               >
                 Rate Appointment
               </Button>
-
-              <Modal
-                ariaHideApp={false}
-                isOpen={isModalOpen}
-                onRequestClose={toggleModalHandler}
-                style={customStyles}
-              >
-                <RateAppointment baseUrl={baseUrl} appointment={appointment} />
-              </Modal>
             </Paper>
           ))}
+          <Modal
+            ariaHideApp={false}
+            isOpen={isModalOpen}
+            onRequestClose={toggleModalHandler}
+            style={customStyles}
+          >
+            <RateAppointment
+              baseUrl={baseUrl}
+              appointment={selectedAppointment}
+            />
+          </Modal>
         </div>
       )}
     </div>
