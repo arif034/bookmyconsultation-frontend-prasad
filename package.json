@@ -19,10 +19,7 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "4.0.3",
     "typeface-roboto": "0.0.54",
-    "web-vitals": "^1.1.2"
-  },
-  "resolutions": {
-    "//": "See https://github.com/facebook/create-react-app/issues/11773",
+    "web-vitals": "^1.1.2",
     "react-error-overlay": "6.0.9"
   },
   "scripts": {
