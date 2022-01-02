@@ -29,7 +29,7 @@ const customStyles = {
 };
 
 const Header = ({ baseUrl, isLogin, setIsLogin }) => {
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
   const [value, setValue] = useState(0);
 
   const toggleModalHandler = () => {

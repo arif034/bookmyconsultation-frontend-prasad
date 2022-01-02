@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import "./Doctor.css";
 import {
   Paper,
   Typography,
   Button,
-  FormControl,
-  InputLabel,
+  Grid,
   Select,
   MenuItem,
 } from "@material-ui/core";
@@ -28,19 +27,7 @@ const customStyles = {
   },
 };
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 200,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(5),
-  },
-}));
-
 const DoctorList = ({ baseUrl }) => {
-  const classes = useStyles();
-
   const [speciality, setSpeciality] = useState("");
   const [specialityList, setSpecialityList] = useState([]);
   const [doctorsList, setDoctorList] = useState([]);
@@ -133,17 +120,17 @@ const DoctorList = ({ baseUrl }) => {
 
   return (
     <div>
-      <FormControl variant="filled" className={classes.formControl}>
-        <InputLabel htmlFor="speciality">Select Speciality </InputLabel>
-        {/* <InputLabel shrink id="speciality">
-          <Typography variant="div">Select Speciality</Typography>
-        </InputLabel> */}
+      <Grid item xs={12} sm container alignItems="center" direction="column">
+        <Typography component="div" id="selectHeading">
+          Select Speciality:
+        </Typography>
         <Select
+          variant="filled"
           labelId="speciality"
           id="speciality"
           value={speciality}
+          style={{ minWidth: "200px" }}
           onChange={changeSpecialityHandler}
-          className={classes.selectEmpty}
         >
           {specialityList.map((item) => (
             <MenuItem key={"spec" + item} value={item}>
@@ -151,67 +138,69 @@ const DoctorList = ({ baseUrl }) => {
             </MenuItem>
           ))}
         </Select>
-      </FormControl>
-      {doctorsList.map((doctor) => {
-        return (
-          <Paper
-            //   style={{ width: "40%" }}
-            key={doctor.id}
-            variant="outlined"
-            elevation={3}
-          >
-            <Typography variant="h5" component="h2">
-              Doctor Name : {doctor.firstName}
-            </Typography>
-            <Typography component="h3">
-              Speciality : {doctor.speciality}
-            </Typography>
-            <Typography component="h3">
-              Rating :
-              <Rating name="read-only" value={doctor.rating} readOnly />
-            </Typography>
-            <Button
-              style={{ width: "40%", margin: "10px" }}
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                setDoctor(doctor);
-                setModalType("bookings");
-                setIsModalOpen(true);
-              }}
+
+        {doctorsList.map((doctor) => {
+          return (
+            <Paper
+              key={doctor.id}
+              variant="elevation"
+              className="doctorListContainer"
+              elevation={3}
             >
-              Book Appointment
-            </Button>
-            <Button
-              style={{
-                width: "40%",
-                margin: "10px",
-                backgroundColor: "green",
-              }}
-              variant="contained"
-              color="secondary"
-              onClick={() => {
-                setDoctor(doctor);
-                setModalType("details");
-                setIsModalOpen(true);
-              }}
-            >
-              View Details
-            </Button>
-          </Paper>
-        );
-      })}
-      <Modal
-        ariaHideApp={false}
-        isOpen={isModalOpen}
-        onRequestClose={closeModalHandler}
-        style={customStyles}
-      >
-        {modalType === "details" && <DoctorDetails doctor={doctor} />}
-        {modalType === "bookings" && (
-          <BookAppointment baseUrl={baseUrl} doctor={doctor} />
-        )}
-      </Modal>
+              <Typography variant="h6" component="h2" gutterBottom>
+                Doctor Name : {doctor.firstName} {doctor.lastName}
+              </Typography>
+              <br />
+              <Typography component="h4" variant="body1">
+                Speciality : {doctor.speciality}
+              </Typography>
+              <Typography component="h4" variant="body1">
+                Rating :
+                <Rating name="read-only" value={doctor.rating} readOnly />
+              </Typography>
+              <Button
+                style={{ width: "40%", margin: "10px" }}
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  setDoctor(doctor);
+                  setModalType("bookings");
+                  setIsModalOpen(true);
+                }}
+              >
+                Book Appointment
+              </Button>
+              <Button
+                style={{
+                  width: "40%",
+                  margin: "10px",
+                  backgroundColor: "green",
+                }}
+                variant="contained"
+                color="secondary"
+                onClick={() => {
+                  setDoctor(doctor);
+                  setModalType("details");
+                  setIsModalOpen(true);
+                }}
+              >
+                View Details
+              </Button>
+            </Paper>
+          );
+        })}
+        <Modal
+          ariaHideApp={false}
+          isOpen={isModalOpen}
+          onRequestClose={closeModalHandler}
+          style={customStyles}
+        >
+          {modalType === "details" && <DoctorDetails doctor={doctor} />}
+          {modalType === "bookings" && (
+            <BookAppointment baseUrl={baseUrl} doctor={doctor} />
+          )}
+        </Modal>
+      </Grid>
     </div>
   );
 };
