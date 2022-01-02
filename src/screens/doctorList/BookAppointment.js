@@ -27,7 +27,10 @@ const BookAppointment = ({
 }) => {
   let doctorName = `${doctor.firstName} ${doctor.lastName}`;
   const dateFormatter = (date) => {
-    return date.toISOString().split("T")[0];
+    let dateArray = date.toLocaleDateString().split("/");
+    let newDate = `${dateArray[2]}-${dateArray[0]}-${dateArray[1]}`;
+    // console.log(newDate);
+    return newDate;
   };
   const currentUserAppoinments = userAppointments;
   const [selectedDate, setSelectedDate] = useState(dateFormatter(new Date()));
@@ -183,6 +186,7 @@ const BookAppointment = ({
                   margin="normal"
                   id="date-picker-inline"
                   label="Date picker inline"
+                  // defaultValue={dateFormatter(new Date())}
                   value={selectedDate}
                   onChange={handleDateChange}
                   KeyboardButtonProps={{
@@ -203,9 +207,10 @@ const BookAppointment = ({
                   <MenuItem value="None">
                     <em>None</em>
                   </MenuItem>
-                  <MenuItem value="05PM-06PM">
+                  {/* For Testing of Duplicate date-time booking */}
+                  {/* <MenuItem value="05PM-06PM">
                     <em>05PM-06PM</em>
-                  </MenuItem>
+                  </MenuItem> */}
                   {availableSlots.map((slot, key) => (
                     <MenuItem key={key} value={slot}>
                       {slot}
