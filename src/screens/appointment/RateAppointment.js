@@ -12,17 +12,47 @@ import { Rating } from "@material-ui/lab";
 
 const RateAppointment = ({ appointment, baseUrl }) => {
   const [comments, setComments] = useState("");
-  const [ratingValue, setRatingValue] = useState(0);
+  const [rating, setRating] = useState(0);
   const [ratingRequiredClass, setRatingRequiredClass] = useState("none");
 
   const submitRatingHandler = async () => {
-    ratingValue === 0
+    rating === 0
       ? setRatingRequiredClass("block")
       : setRatingRequiredClass("none");
+    const accessToken = sessionStorage.getItem("accessToken");
 
+    let data = {
+      appointmentId: appointment.appointmentId,
+      doctorId: appointment.doctorId,
+      rating: rating,
+      comments: comments,
+    };
     const url = baseUrl + "ratings";
-    console.log(url);
+    // console.log(url, data, accessToken);
+
+    try {
+      //   debugger;
+      const rawResponse = await fetch(url, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=UTF-8",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (rawResponse.ok) {
+        console.log("Rating Submitted successfully");
+      }
+      if (rawResponse.status === 400) {
+        console.log("Bad Post Request");
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
+
   return (
     <Paper>
       <CardHeader className="cardHeader" title="Rate an Appointment" />
@@ -42,15 +72,16 @@ const RateAppointment = ({ appointment, baseUrl }) => {
         <br />
         <div>
           <FormControl>
+            Rating:
             <Rating
-              name="simple-controlled"
-              value={ratingValue}
+              name={appointment.appointmentId}
+              value={rating}
               onChange={(event, newValue) => {
-                setRatingValue(newValue);
+                setRating(newValue);
               }}
             />
             <FormHelperText className={ratingRequiredClass}>
-              <span className="red">Submit a rating</span>
+              <span className="red">Select a rating</span>
             </FormHelperText>
           </FormControl>
         </div>
