@@ -103,6 +103,7 @@ const BookAppointment = ({
       ) {
         return appt;
       }
+      return null;
     });
 
     // console.log(existingBooking.length);

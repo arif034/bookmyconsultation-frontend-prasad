@@ -144,7 +144,7 @@ const DoctorList = ({ baseUrl, getUserAppointments, userAppointments }) => {
           style={{ minWidth: "200px" }}
           onChange={changeSpecialityHandler}
         >
-          <MenuItem key={"spec" + "none"} value={""}>
+          <MenuItem key={"spec none"} value={""}>
             NONE
           </MenuItem>
           {specialityList.map((item) => (

@@ -47,6 +47,7 @@ const Home = ({ baseUrl }) => {
     if (isLogin === true) {
       getUserAppointments();
     }
+    // eslint-disable-next-line
   }, [isLogin]);
 
   return (
