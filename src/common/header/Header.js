@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Header.css";
 import logo from "../../assets/logo.jpeg";
 import Modal from "react-modal";
-import { Button, Tabs, Tab } from "@material-ui/core";
+import { Button, Tabs, Tab, Typography } from "@material-ui/core";
 import TabContainer from "../tabContainer/TabContainer";
 import Login from "../../screens/login/Login";
 import Register from "../../screens/register/Register";
@@ -109,7 +109,11 @@ const Header = ({ baseUrl, isLogin, setIsLogin }) => {
   return (
     <div>
       <header className="header">
-        <img src={logo} className="logo" alt="logo" /> Doctor Finder
+        <span>
+          <img src={logo} className="logo" alt="logo" />
+          <span className="brandTitle">Doctor Finder</span>
+        </span>
+
         <div className="login-button">
           {!isLogin === true ? (
             <Button
