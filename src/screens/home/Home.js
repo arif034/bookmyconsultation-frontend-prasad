@@ -64,6 +64,7 @@ const Home = ({ baseUrl }) => {
       {value === 0 && (
         <DoctorList
           getUserAppointments={getUserAppointments}
+          userAppointments={userAppointments}
           baseUrl={baseUrl}
         />
       )}

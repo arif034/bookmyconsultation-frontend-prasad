@@ -39,7 +39,7 @@ const bookingsModal = {
   },
 };
 
-const DoctorList = ({ baseUrl, getUserAppointments }) => {
+const DoctorList = ({ baseUrl, getUserAppointments, userAppointments }) => {
   const [speciality, setSpeciality] = useState("");
   const [specialityList, setSpecialityList] = useState([]);
   const [doctorsList, setDoctorList] = useState([]);
@@ -216,6 +216,7 @@ const DoctorList = ({ baseUrl, getUserAppointments }) => {
               baseUrl={baseUrl}
               doctor={doctor}
               getUserAppointments={getUserAppointments}
+              userAppointments={userAppointments}
               closeModalHandler={closeModalHandler}
             />
           )}

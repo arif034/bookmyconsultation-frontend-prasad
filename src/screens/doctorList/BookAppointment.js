@@ -22,13 +22,14 @@ const BookAppointment = ({
   baseUrl,
   doctor,
   getUserAppointments,
+  userAppointments,
   closeModalHandler,
 }) => {
   let doctorName = `${doctor.firstName} ${doctor.lastName}`;
   const dateFormatter = (date) => {
     return date.toISOString().split("T")[0];
   };
-
+  const currentUserAppoinments = userAppointments;
   const [selectedDate, setSelectedDate] = useState(dateFormatter(new Date()));
   const [selectedSlot, setSelectedSlot] = useState("");
   const [availableSlots, setAvailableSlots] = useState(["None"]);
@@ -92,6 +93,21 @@ const BookAppointment = ({
       return;
     }
 
+    const existingBooking = currentUserAppoinments.filter((appt) => {
+      if (
+        appt.appointmentDate === selectedDate &&
+        appt.timeSlot === selectedSlot
+      ) {
+        return appt;
+      }
+    });
+
+    // console.log(existingBooking.length);
+    if (existingBooking.length > 0) {
+      alert("Either the slot is already booked or not available");
+      return;
+    }
+
     let data = {
       doctorId: doctor.id,
       doctorName: doctorName,
@@ -103,7 +119,9 @@ const BookAppointment = ({
       symptoms: symptoms,
       priorMedicalHistory: medicalHistory,
     };
+
     console.log(data);
+
     const url = baseUrl + "appointments";
     try {
       // debugger;
@@ -137,6 +155,7 @@ const BookAppointment = ({
 
   useEffect(() => {
     getAvailableSlots();
+    console.log(currentUserAppoinments);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate]);
 
