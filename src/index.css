@@ -26,8 +26,9 @@ code {
 
 .cardHeader {
   background: purple;
-  color: white;
-  padding: 11px;
+  font-size: 1.5rem;
+  color: white !important;
+  padding: 11px !important;
   height: 70px;
   display: flex;
   align-items: center;
