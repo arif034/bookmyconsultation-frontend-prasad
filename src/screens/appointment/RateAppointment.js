@@ -7,6 +7,7 @@ import {
   FormControl,
   Button,
   FormHelperText,
+  Typography,
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 
@@ -72,14 +73,23 @@ const RateAppointment = ({ appointment, baseUrl }) => {
         <br />
         <div>
           <FormControl>
-            Rating:
-            <Rating
-              name={appointment.appointmentId}
-              value={rating}
-              onChange={(event, newValue) => {
-                setRating(newValue);
-              }}
-            />
+            <div>
+              <Typography
+                variant="body1"
+                component="span"
+                className="hasTextBlack"
+              >
+                Rating:
+              </Typography>
+
+              <Rating
+                name={appointment.appointmentId}
+                value={rating}
+                onChange={(event, newValue) => {
+                  setRating(newValue);
+                }}
+              />
+            </div>
             <FormHelperText className={ratingRequiredClass}>
               <span className="red">Select a rating</span>
             </FormHelperText>
@@ -90,7 +100,7 @@ const RateAppointment = ({ appointment, baseUrl }) => {
           <Button
             variant="contained"
             color="primary"
-            size="small"
+            // size="small"
             onClick={submitRatingHandler}
           >
             Rate Appointment

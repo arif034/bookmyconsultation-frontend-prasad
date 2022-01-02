@@ -20,6 +20,10 @@ code {
   display: none;
 }
 
+.flex {
+  display: flex !important;
+}
+
 .block {
   display: block;
 }
@@ -37,4 +41,18 @@ code {
 #timeSlotInput {
   min-width: 70px !important;
   width: fit-content;
+}
+
+.hasTextBlack {
+  color: #000 !important;
+}
+
+.noLoginText {
+  text-align: center;
+  margin-top: 20px !important;
+}
+
+.appointmentContainer {
+  padding: 20px;
+  margin: 30px 15px;
 }

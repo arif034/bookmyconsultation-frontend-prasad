@@ -20,7 +20,7 @@ const Home = ({ baseUrl }) => {
         onChange={tabSwitchHandler}
       >
         <Tab label="Doctors"></Tab>
-        <Tab label="Appointments"></Tab>
+        <Tab label="Appointment"></Tab>
       </Tabs>
       {value === 0 && <DoctorList baseUrl={baseUrl} />}
       {value === 1 && <Appointment baseUrl={baseUrl} isLogin={isLogin} />}
