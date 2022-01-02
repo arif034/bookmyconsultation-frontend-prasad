@@ -132,7 +132,7 @@ const Register = ({ baseUrl, loginUser }) => {
       <br />
 
       <FormControl required>
-        <InputLabel htmlFor="email">Email</InputLabel>
+        <InputLabel htmlFor="email">Email Id</InputLabel>
         <Input id="email" type="email" onChange={changeEmailHandler} />
         <FormHelperText className={emailRequiredClass}>
           <span className="red">required</span>
