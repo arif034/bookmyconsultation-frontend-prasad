@@ -20,7 +20,8 @@ const customStyles = {
 const Appointment = ({ isLogin, baseUrl }) => {
   const [userAppointments, setUserAppointments] = useState([]);
   const emailId = JSON.parse(sessionStorage.getItem("userId"));
-  const [appointment, setAppointment] = useState(null);
+  // eslint-disable-next-line
+  const [appointment, setAppointment] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const getUserAppointments = async () => {
@@ -62,6 +63,7 @@ const Appointment = ({ isLogin, baseUrl }) => {
     if (isLogin === true) {
       getUserAppointments();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin]);
   return (
     <div>

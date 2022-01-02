@@ -104,7 +104,7 @@ const Header = ({ baseUrl, isLogin, setIsLogin }) => {
     const isLoggedIn =
       sessionStorage.getItem("accessToken") == null ? false : true;
     setIsLogin(isLoggedIn);
-  }, []);
+  }, [setIsLogin]);
 
   return (
     <div>

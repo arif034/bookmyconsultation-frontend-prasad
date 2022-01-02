@@ -115,6 +115,7 @@ const BookAppointment = ({ baseUrl, doctor }) => {
 
   useEffect(() => {
     getAvailableSlots();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate]);
 
   return (
