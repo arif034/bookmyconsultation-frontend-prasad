@@ -6,7 +6,6 @@ import {
   Input,
   FormHelperText,
   Button,
-  Typography,
 } from "@material-ui/core";
 
 const Register = ({ baseUrl, loginUser }) => {
