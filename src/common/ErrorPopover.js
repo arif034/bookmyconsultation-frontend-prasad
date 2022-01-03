@@ -4,10 +4,10 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   typography: {
-    padding: theme.spacing(1),
+    padding: theme.spacing(1.5),
     backgroundColor: "#464646",
     color: "white",
-    fontSize: "12px",
+    fontSize: "14px",
   },
 }));
 

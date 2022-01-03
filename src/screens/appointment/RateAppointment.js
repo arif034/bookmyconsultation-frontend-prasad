@@ -15,6 +15,7 @@ const RateAppointment = ({ appointment, baseUrl, toggleModalHandler }) => {
   const [comments, setComments] = useState("");
   const [rating, setRating] = useState(0);
   const [ratingRequiredClass, setRatingRequiredClass] = useState("none");
+  const [ratingSubmitted, setRatingSubmitted] = useState(false);
 
   const ratingChangeHanler = (event, newValue) => {
     setRating(newValue);
@@ -53,9 +54,12 @@ const RateAppointment = ({ appointment, baseUrl, toggleModalHandler }) => {
       });
 
       if (rawResponse.ok) {
-        toggleModalHandler();
+        setRatingSubmitted(true);
+        setTimeout(function () {
+          toggleModalHandler();
+        }, 1000);
         // console.log("Rating Submitted successfully");
-        alert("Rating Submitted successfully");
+        // alert("Rating Submitted successfully");
       }
       if (rawResponse.status === 400) {
         alert("Bad Post Request");
@@ -101,10 +105,17 @@ const RateAppointment = ({ appointment, baseUrl, toggleModalHandler }) => {
               />
             </div>
             <FormHelperText className={ratingRequiredClass}>
-              <span className="red">Submit a rating</span>
+              <span className="red">Select a rating</span>
             </FormHelperText>
           </FormControl>
         </div>
+        <br />
+        {ratingSubmitted === true && (
+          <FormControl>
+            <span>Rating submitted successfully.</span>
+          </FormControl>
+        )}
+        <br />
         <br />
         <div>
           <Button

@@ -6,6 +6,7 @@ import {
   Input,
   FormHelperText,
   Button,
+  Typography,
 } from "@material-ui/core";
 
 const Register = ({ baseUrl, loginUser }) => {
@@ -114,10 +115,7 @@ const Register = ({ baseUrl, loginUser }) => {
         // const response = await rawResponse.json();
         // console.log(response);
         setIsRegistered(true);
-
-        setTimeout(function () {
-          loginUser(email, password);
-        }, 2000);
+        loginUser(email, password);
       }
     } catch (e) {
       alert(e.message);

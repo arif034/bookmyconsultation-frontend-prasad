@@ -39,6 +39,7 @@ const BookAppointment = ({
   const [medicalHistory, setMedicalHistory] = useState("");
   const [symptoms, setSymptoms] = useState("");
   const [slotRequiredClass, setSlotRequiredClass] = useState("none");
+  const [bookedSuccessfully, setBookedSuccessfully] = useState(false);
 
   const handleDateChange = (date) => {
     setSelectedDate(dateFormatter(date));
@@ -91,12 +92,14 @@ const BookAppointment = ({
     // console.log(JSON.parse(emailId));
     // console.log(accessToken, emailId, userDetails);
 
+    // Allow only logged in user to Book appointment
     if (emailId == null || userDetails == null || accessToken == null) {
       alert("Please Login to Book an appointment");
       closeModalHandler();
       return;
     }
 
+    // Check if user already has appointment for the same date-time
     const existingBooking = currentUserAppoinments.filter((appt) => {
       if (
         appt.appointmentDate === selectedDate &&
@@ -141,13 +144,16 @@ const BookAppointment = ({
       });
 
       if (rawResponse.ok) {
+        setBookedSuccessfully(true);
         getUserAppointments();
-        closeModalHandler();
+        setTimeout(function () {
+          closeModalHandler();
+        }, 1000);
         // console.log("Appointment booked successfully");
-        alert("Appointment booked successfully");
+        // alert("Appointment booked successfully");
       }
       if (rawResponse.status === 400) {
-        alert("Either the slot is already booked or not available");
+        alert("Bad Request");
       }
     } catch (e) {
       alert(e.message);
@@ -250,6 +256,13 @@ const BookAppointment = ({
                 />
               </FormControl>
             </div>
+            <br />
+            {bookedSuccessfully === true && (
+              <FormControl>
+                <span>Appointment booked successfully.</span>
+              </FormControl>
+            )}
+            <br />
             <br />
             <Button
               id="bookappointment"

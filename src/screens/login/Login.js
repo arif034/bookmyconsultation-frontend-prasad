@@ -9,7 +9,7 @@ import {
   InputLabel,
 } from "@material-ui/core";
 
-const Login = ({ loginUser }) => {
+const Login = ({ loginUser, isLogin }) => {
   const [email, setEmail] = useState("");
   const [invalidEmailClass, setInvalidEmailClass] = useState("none");
   const [password, setPassword] = useState("");
@@ -94,6 +94,12 @@ const Login = ({ loginUser }) => {
         </FormControl>
         <br />
         <br />
+
+        {isLogin === true && (
+          <FormControl>
+            <span>Login Successful.</span>
+          </FormControl>
+        )}
         <br />
         <Button variant="contained" color="primary" type="submit">
           LOGIN

@@ -81,7 +81,7 @@ const Header = ({ baseUrl, isLogin, setIsLogin }) => {
     // console.log(url);
 
     const params = window.btoa(email + ":" + password);
-
+    // debugger;
     try {
       const rawResponse = await fetch(url, {
         method: "POST",
@@ -100,17 +100,19 @@ const Header = ({ baseUrl, isLogin, setIsLogin }) => {
         window.sessionStorage.setItem("userId", JSON.stringify(response.id));
         window.sessionStorage.setItem("accessToken", response.accessToken);
         setIsLogin(true);
-        toggleModalHandler();
+        setTimeout(function () {
+          toggleModalHandler();
+        }, 2000);
         // console.log("User Logged In");
       } else {
         const error = new Error();
         error.message = "Something went wrong.";
-        alert("Some Error Occurred. User Could not be logged in");
+        // alert("Some Error Occurred. User Could not be logged in");
         // console.log("User Could not be logged in");
         throw error;
       }
     } catch (e) {
-      alert(e.message);
+      alert(`${e.message} Please enter correct details.`);
     }
   };
 
@@ -164,7 +166,7 @@ const Header = ({ baseUrl, isLogin, setIsLogin }) => {
               <Tab label="Register" />
             </Tabs>
             <TabContainer>
-              {value === 0 && <Login loginUser={loginUser} />}
+              {value === 0 && <Login loginUser={loginUser} isLogin={isLogin} />}
               {value === 1 && (
                 <Register
                   baseUrl={baseUrl}

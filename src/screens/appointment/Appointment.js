@@ -32,6 +32,10 @@ const Appointment = ({ isLogin, baseUrl, userAppointments }) => {
         <Typography variant="h6" component="h5" className="noLoginText">
           Login to see appointments
         </Typography>
+      ) : userAppointments.length === 0 ? (
+        <Typography variant="h6" component="h5" className="noLoginText">
+          No Current Appointments to Show.
+        </Typography>
       ) : (
         <div>
           {userAppointments.map((appointment) => (
